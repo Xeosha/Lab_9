@@ -1,5 +1,7 @@
-﻿using System;
+﻿using InputKeyboard;
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,11 +10,13 @@ namespace Lab_9
 {
     public class TimeArray
     {
-        static public int count = 0;
-
-        Time[] arr;
+        static private int count = 0;
+        private Time[] arr;
         public int Size => arr.Length;
-        public TimeArray() : this(0) { }    
+        public static int Count => count;
+
+        public TimeArray() : this(0) { }  
+        
         public TimeArray(int size)
         {
             arr = new Time[size];
@@ -24,6 +28,18 @@ namespace Lab_9
                 int minutes = random.Next(0, 60);
 
                 arr[i] = new Time(hours, minutes);
+            }
+            count++;
+        }
+
+        public TimeArray(bool console)
+        {
+            int newSize = EnterKeybord.TypeInteger("Введите количество элементов: ", 0);
+            arr = new Time[newSize];
+            for (int i = 0; i < Size; i++)
+            {
+                arr[i] = new Time();
+                arr[i].ReadTime();
             }
             count++;
         }

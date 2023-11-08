@@ -1,23 +1,6 @@
 ﻿using Lab_9;
 using Menu;
-
-static Time subTime(Time time1, Time time2)
-{
-    int totalMinutes = time1.Hours * 60 + time1.Minutes;
-    int otherMinutes = time2.Hours * 60 + time2.Minutes;
-
-    int resultMinutes = totalMinutes - otherMinutes;
-    if (resultMinutes < 0)
-    {
-        resultMinutes = 0;
-    }
-
-    int resultHours = resultMinutes / 60;
-    resultMinutes %= 60;
-
-    return new Time(resultHours, resultMinutes);
-}
-
+using System.Net.Http.Headers;
 
 static void Task1()
 {
@@ -35,7 +18,8 @@ static void Task1()
     Console.WriteLine($"result = time1 - time2 (оператор -): {result}");
     result.SubTime(time2);
     Console.WriteLine($"result - time2 (метод класса): {result}");
-    Console.WriteLine($"time1 - time2 (отдельно от класса): {subTime(time1, time2)}");
+    Time result2 = time1 - time2;
+    Console.WriteLine($"result2 = time1 - time2 (статический метод): {result}");
     Console.WriteLine();
     Console.WriteLine("Кол-во созданных объектов: " + Time.Count());
 }
@@ -110,9 +94,9 @@ static void Task3()
 
     Console.WriteLine();
 
-    Console.WriteLine("Element at index 2 in Array 3: " + array3[2]);
+    Console.WriteLine("Элемент под 3 номером: " + array3[2]);
     array3[2] = new Time(15, 45);
-    Console.WriteLine("Updated Array 3:");
+    Console.WriteLine("Изменение на 15:45 под 3 номер:");
     array3.Display();
     MaxTime(array3);
 }
@@ -126,3 +110,6 @@ var dialog = new Dialog(new[]
 
 dialog.Start();
 
+var time2 = new Time(11, 59);
+time2++;
+time2.PrintTime();
