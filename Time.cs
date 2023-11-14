@@ -53,57 +53,55 @@ namespace Lab_9
         // число созданных объектов
         public static int Count() => count;
 
+        // число объектов к нулю
+        public static void CounterErrase() => count = 0;
         // Перегрузка оператора вычитания
+        // Метод для получения общего числа минут из объекта Time
+        private static int GetTotalMinutes(Time time)
+        {
+            return time.Hours * 60 + time.Minutes;
+        }
+
+        // Метод для создания объекта Time из общего числа минут
+        private static Time CreateTimeFromMinutes(int totalMinutes)
+        {
+            if (totalMinutes < 0)
+            {
+                totalMinutes = 0;
+                Console.WriteLine("\nВычитаемое больше уменьшаего!");
+            }
+
+            int hours = totalMinutes / 60;
+            int minutes = totalMinutes % 60;
+
+            return new Time(hours, minutes);
+        }
+
+        // Оператор вычитания
         public static Time operator -(Time time1, Time time2)
         {
-            int totalMinutes = time1.Hours * 60 + time1.Minutes;
-            int otherMinutes = time2.Hours * 60 + time2.Minutes;
-
-            int resultMinutes = totalMinutes - otherMinutes;
-            if (resultMinutes < 0)
-            {
-                resultMinutes = 0;
-            }
-
-            int resultHours = resultMinutes / 60;
-            resultMinutes %= 60;
-
-            return new Time(resultHours, resultMinutes);
+            int totalMinutes = GetTotalMinutes(time1);
+            int otherMinutes = GetTotalMinutes(time2);
+            return CreateTimeFromMinutes(totalMinutes - otherMinutes);
         }
 
-        // Вычитание из данного объекта (метод класса)
+        // Метод вычитания из данного объекта
         public void SubTime(Time time2)
         {
-            int totalMinutes = this.Hours * 60 + this.Minutes;
-            int otherMinutes = time2.Hours * 60 + time2.Minutes;
-
-            int resultMinutes = totalMinutes - otherMinutes;
-            if (resultMinutes < 0)
-            {
-                resultMinutes = 0;
-
-            }
-
-            this.Hours = resultMinutes / 60;
-            this.Minutes = resultMinutes % 60;
+            int totalMinutes = GetTotalMinutes(this);
+            int otherMinutes = GetTotalMinutes(time2);
+            Time resultTime = CreateTimeFromMinutes(totalMinutes - otherMinutes);
+            this.Hours = resultTime.Hours;
+            this.Minutes = resultTime.Minutes;
         }
 
-        // Вычитание из данного объекта (статический метод)
+        // Статический метод вычитания
         public static Time SubTime(Time time1, Time time2)
         {
-            int totalMinutes = time1.Hours * 60 + time1.Minutes;
-            int otherMinutes = time2.Hours * 60 + time2.Minutes;
-
-            int resultMinutes = totalMinutes - otherMinutes;
-            if (resultMinutes < 0)
-            {
-                resultMinutes = 0;
-                Console.WriteLine("Вычитаемое больше уменьшаего!");
-            }
-
-            return new Time(resultMinutes / 60, resultMinutes % 60);
+            int totalMinutes = GetTotalMinutes(time1);
+            int otherMinutes = GetTotalMinutes(time2);
+            return CreateTimeFromMinutes(totalMinutes - otherMinutes);
         }
-
         // Вывод часов и минут
         public void PrintTime() => Console.WriteLine($"{Hours:D2}:{Minutes:D2}");
 
@@ -120,33 +118,41 @@ namespace Lab_9
         // Унарная операция ++: добавление минуты к объекту типа Time
         public static Time operator ++(Time time)
         {
-            if (time.Minutes + 1 >= 60)
+            int newHours = time.Hours;
+            int newMinutes = time.Minutes + 1;
+
+            if (newMinutes >= 60)
             {
-                time.Minutes = (time.Minutes + 1) % 60;
-                time.Hours++;
+                newMinutes %= 60;
+                newHours++;
             }
-            return time;
+
+            return new Time(newHours, newMinutes);
         }
 
         // Унарная операция --: вычитание минуты из объекта типа Time (учесть, что минут не может быть меньше 0)
         public static Time operator --(Time time)
         {
-            if (time.Minutes > 0)
+            int newHours = time.Hours;
+            int newMinutes = time.Minutes;
+
+            if (newMinutes > 0)
             {
-                time.Minutes--;
+                newMinutes--;
             }
-            else if (time.Hours > 0)
+            else if (newHours > 0)
             {
-                time.Hours--;
-                time.Minutes = 59;
+                newHours--;
+                newMinutes = 59;
             }
-            return time;
+
+            return new Time(newHours, newMinutes);
         }
 
         // Операция приведения типа int (неявная): время переводится в минуты
         public static implicit operator int(Time time)
         {
-            return time.Hours * 60 + time.Minutes;
+            return GetTotalMinutes(time);
         }
 
         // Операция приведения типа bool (явная)
@@ -161,14 +167,14 @@ namespace Lab_9
         // Результатом является true, если количество минут в левом операнде меньше, чем количество минут в правом операнде, и false – в противном случае
         public static bool operator <(Time t1, Time t2)
         {
-            return t1.Hours * 60 + t1.Minutes < t2.Hours * 60 + t2.Minutes;
+            return GetTotalMinutes(t1) < GetTotalMinutes(t2);
         }
 
         // Бинарная операция > Time t1, Time t2 – время переводится в минуты
         // Результатом является true, если количество минут в левом операнде больше, чем количество минут в правом операнде, и false – в противном случае
         public static bool operator >(Time t1, Time t2)
         {
-            return t1.Hours * 60 + t1.Minutes > t2.Hours * 60 + t2.Minutes;
+            return GetTotalMinutes(t1) > GetTotalMinutes(t2);
         }
 
         public override bool Equals(object? obj)

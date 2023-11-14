@@ -8,17 +8,47 @@ using System.Threading.Tasks;
 
 namespace Lab_9
 {
+    public class TaskThreeTime
+    {
+        public static Time? MaxTime(TimeArray arr)
+        {
+            if (arr == null || arr.Size == 0)
+            {
+                Console.WriteLine("Пустой массив Time");
+                return null;
+            }
+            else
+            {
+                Time maxTime = arr[0];
+                for (int i = 0; i < arr.Size; i++)
+                {
+                    if (maxTime < arr[i])
+                        maxTime = arr[i];
+                }
+                Console.WriteLine($"Максимальное значение: {maxTime}");
+                return maxTime;
+            }
+        }
+    }
+
     public class TimeArray
     {
         static private int count = 0;
         private Time[] arr;
         public int Size => arr.Length;
-        public static int Count => count;
+        public static int Count() => count;
+
+        public static void CounterErrase() => count = 0;
 
         public TimeArray() : this(0) { }  
         
         public TimeArray(int size)
         {
+            if (size < 0)
+            {
+                Console.WriteLine("Размер не может быть меньше 0");
+                size = 0;
+            }
             arr = new Time[size];
             var random = new Random();
 
@@ -56,6 +86,10 @@ namespace Lab_9
 
         public void Display()
         {
+            if (arr == null || arr.Length == 0)
+            {
+                Console.WriteLine("Массив пуст.");
+            }
             foreach (Time time in arr)
             {
                 time.PrintTime();

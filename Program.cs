@@ -12,14 +12,16 @@ static void Task1()
     time2.ReadTime();
 
     Console.WriteLine($"Первый объект: {time1}\nВторой объект: {time2}");
-
     Console.WriteLine();
+
     Time result = time1 - time2;
     Console.WriteLine($"result = time1 - time2 (оператор -): {result}");
-    result.SubTime(time2);
-    Console.WriteLine($"result - time2 (метод класса): {result}");
-    Time result2 = time1 - time2;
-    Console.WriteLine($"result2 = time1 - time2 (статический метод): {result}");
+
+    time1.SubTime(time2);
+    Console.WriteLine($"time1.SubTime(time2) (метод класса): {result}");
+
+    Console.WriteLine($"Time.SubTime(time1, time2) (статический метод): {Time.SubTime(time1, time2)}");
+
     Console.WriteLine();
     Console.WriteLine("Кол-во созданных объектов: " + Time.Count());
 }
@@ -34,22 +36,22 @@ static void Task2()
     Console.WriteLine($"Первый объект: {time1}\nВторой объект: {time2}");
 
     Time incrementedTime = ++time1;
-    Console.WriteLine("++time1 : " + incrementedTime);  // Выведет: 4:46
+    Console.WriteLine("++time1 : " + incrementedTime); 
 
     Time decrementedTime = --time1;
-    Console.WriteLine("--time1 : " + decrementedTime);  // Выведет: 4:45
+    Console.WriteLine("--time1 : " + decrementedTime); 
 
     int minutes = time1; //неявно
-    Console.WriteLine("Явное преобразование к int: " + minutes);  // Выведет: 285
+    Console.WriteLine("Явное преобразование к int: " + minutes);  
 
     bool isNotEmpty = (bool)time1; //явно
-    Console.WriteLine("Неявное преобразование к bool: " + isNotEmpty);  // Выведет: true
+    Console.WriteLine("Неявное преобразование к bool: " + isNotEmpty);  
 
     bool isLessThan = time1 < time2;
-    Console.WriteLine("time1 < time2 : " + isLessThan);  // Выведет: false
-    
+    Console.WriteLine("time1 < time2 : " + isLessThan);  
+
     bool isGreaterThan = time1 > time2;
-    Console.WriteLine("time1 > time2 : " + isGreaterThan);  // Выведет: true
+    Console.WriteLine("time1 > time2 : " + isGreaterThan);  
 }
 
 
@@ -109,7 +111,3 @@ var dialog = new Dialog(new[]
 });
 
 dialog.Start();
-
-var time2 = new Time(11, 59);
-time2++;
-time2.PrintTime();
