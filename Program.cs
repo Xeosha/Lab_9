@@ -42,10 +42,10 @@ static void Task2()
     Console.WriteLine("--time1 : " + decrementedTime); 
 
     int minutes = time1; //неявно
-    Console.WriteLine("Явное преобразование к int: " + minutes);  
+    Console.WriteLine("Неявное преобразование к int: " + minutes);  
 
     bool isNotEmpty = (bool)time1; //явно
-    Console.WriteLine("Неявное преобразование к bool: " + isNotEmpty);  
+    Console.WriteLine("Явное преобразование к bool: " + isNotEmpty);  
 
     bool isLessThan = time1 < time2;
     Console.WriteLine("time1 < time2 : " + isLessThan);  
@@ -54,24 +54,6 @@ static void Task2()
     Console.WriteLine("time1 > time2 : " + isGreaterThan);  
 }
 
-
-static void MaxTime(TimeArray arr)
-{
-    if (arr == null || arr.Size == 0)
-    {
-        Console.WriteLine("Пустой массив Time");
-    }
-    else
-    {
-        Time maxTime = arr[0];
-        for (int i = 0; i < arr.Size; i++)
-        {
-            if (maxTime < arr[i])
-                maxTime = arr[i];
-        }
-        Console.WriteLine($"Максимальное значение: {maxTime}");
-    }
-}
 static void Task3()
 {
     var array1 = new TimeArray();
@@ -100,7 +82,7 @@ static void Task3()
     array3[2] = new Time(15, 45);
     Console.WriteLine("Изменение на 15:45 под 3 номер:");
     array3.Display();
-    MaxTime(array3);
+    TaskThreeTime.MaxTime(array3);
 }
 
 var dialog = new Dialog(new[]

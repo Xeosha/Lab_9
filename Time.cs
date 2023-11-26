@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,33 +13,46 @@ namespace Lab_9
         private int hours;
         private int minutes;
         private static int count = 0;
+
         public int Hours
         {
-            get { return hours; }
+            get => this.hours;
             set
             {
                 if (value < 0)
-                    Console.WriteLine("Ошибка, количество часов не может быть меньше нуля!");
-                else
-                    hours = value;
-            }
-        }
-        public int Minutes
-        {
-            get { return minutes; }
-            set
-            {
-                if (value < 0)
-                    Console.WriteLine("Ошибка, количество минут не может быть меньше нуля!");
-                else if (value > 59)
                 {
-                    Console.WriteLine("Ошибка, количество минут не может быть больше 59");
+                    Console.WriteLine("Часы не могут быть отрицательными");
+                    this.hours = this.hours > 0 ? this.hours : 0;
                 }
-                else
-                    minutes = value;
+
+                AdjustTime(value, this.minutes);
             }
         }
 
+        public int Minutes
+        {
+            get => this.minutes;
+            set
+            {
+                if (value < 0 && hours <= 0)
+                {
+                    Console.WriteLine("Минуты не могут быть отрицательными");
+                    this.minutes = this.minutes > 0 ? this.minutes : 0;
+                }
+
+                AdjustTime(this.hours, value);
+            }
+        }
+
+        private void AdjustTime(int hours, int minutes)
+        {
+            int totalMinutes = (hours * 60) + minutes;
+
+            this.hours = totalMinutes / 60 % 24;
+            this.minutes = totalMinutes % 60;
+
+          
+        }
 
         // Конструкторы, вызывают конструктор с двумя параметрами.
         public Time() : this(0, 0) {}
@@ -55,6 +69,7 @@ namespace Lab_9
 
         // число объектов к нулю
         public static void CounterErrase() => count = 0;
+
         // Перегрузка оператора вычитания
         // Метод для получения общего числа минут из объекта Time
         private static int GetTotalMinutes(Time time)
@@ -109,7 +124,7 @@ namespace Lab_9
         public void ReadTime()
         {
             Hours = EnterKeybord.TypeInteger("Введите часы: ", 0);
-            Minutes = EnterKeybord.TypeInteger("Введите минуты: ", 0, 60);
+            Minutes = EnterKeybord.TypeInteger("Введите минуты: ", 0);
         }
         
         // Приведение к string
@@ -118,35 +133,13 @@ namespace Lab_9
         // Унарная операция ++: добавление минуты к объекту типа Time
         public static Time operator ++(Time time)
         {
-            int newHours = time.Hours;
-            int newMinutes = time.Minutes + 1;
-
-            if (newMinutes >= 60)
-            {
-                newMinutes %= 60;
-                newHours++;
-            }
-
-            return new Time(newHours, newMinutes);
+            return new Time(time.Hours, ++time.Minutes);
         }
 
         // Унарная операция --: вычитание минуты из объекта типа Time (учесть, что минут не может быть меньше 0)
         public static Time operator --(Time time)
         {
-            int newHours = time.Hours;
-            int newMinutes = time.Minutes;
-
-            if (newMinutes > 0)
-            {
-                newMinutes--;
-            }
-            else if (newHours > 0)
-            {
-                newHours--;
-                newMinutes = 59;
-            }
-
-            return new Time(newHours, newMinutes);
+            return new Time(time.Hours, --time.Minutes);
         }
 
         // Операция приведения типа int (неявная): время переводится в минуты
