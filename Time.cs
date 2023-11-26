@@ -22,10 +22,12 @@ namespace Lab_9
                 if (value < 0)
                 {
                     Console.WriteLine("Часы не могут быть отрицательными");
-                    this.hours = this.hours > 0 ? this.hours : 0;
+                    this.hours = 0;
                 }
-
-                AdjustTime(value, this.minutes);
+                else
+                {
+                    AdjustTime(value, this.minutes);
+                }
             }
         }
 
@@ -37,10 +39,12 @@ namespace Lab_9
                 if (value < 0 && hours <= 0)
                 {
                     Console.WriteLine("Минуты не могут быть отрицательными");
-                    this.minutes = this.minutes > 0 ? this.minutes : 0;
+                    this.minutes = 0;
                 }
-
-                AdjustTime(this.hours, value);
+                else
+                {
+                    AdjustTime(this.hours, value);
+                }
             }
         }
 
